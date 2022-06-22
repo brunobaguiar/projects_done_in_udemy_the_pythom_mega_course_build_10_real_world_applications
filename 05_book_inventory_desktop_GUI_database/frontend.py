@@ -1,5 +1,7 @@
 from tkinter import *
-import backend
+from backend import Database
+
+database = Database("book.db")
 
 
 def get_selected_row(event):
@@ -22,7 +24,7 @@ def get_selected_row(event):
 def view_command():
     # delete from line 0 to the end
     list1.delete(0, END)
-    for row in backend.view():
+    for row in database.view():
         # insert at the end the row
         list1.insert(END, row)
     e1.delete(0, END)
@@ -33,23 +35,23 @@ def view_command():
 
 def search_command():
     list1.delete(0, END)
-    for row in backend.search(title_text.get(), author_text.get(), year_text.get(), isbn_text.get()):
+    for row in database.search(title_text.get(), author_text.get(), year_text.get(), isbn_text.get()):
         list1.insert(END, row)
 
 
 def add_command():
-    backend.insert(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
+    database.insert(title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
     list1.delete(0, END)
     list1.insert(END, (title_text.get(), author_text.get(), year_text.get(), isbn_text.get()))
 
 
 def delete_command():
-    backend.delete(selected_tuple[0])
+    database.delete(selected_tuple[0])
     view_command()
 
 
 def update_command():
-    backend.update(selected_tuple[0], title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
+    database.update(selected_tuple[0], title_text.get(), author_text.get(), year_text.get(), isbn_text.get())
     view_command()
 
 
@@ -112,7 +114,7 @@ b4.grid(row=5, column=3)
 b5 = Button(window, text='Delete selected', width=12, command=delete_command)
 b5.grid(row=6, column=3)
 
-b6 = Button(window, text='Close', width=12,command=window.destroy)
+b6 = Button(window, text='Close', width=12, command=window.destroy)
 b6.grid(row=7, column=3)
 
 # This makes sure to keep the main window open
